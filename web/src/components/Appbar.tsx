@@ -1,21 +1,37 @@
-"use client"
-import { signIn , signOut, useSession } from "next-auth/react"
-import { useState } from "react"
-// import { useRouter } from "next/navigation"
+"use client";
+import { useRecoilValue } from "recoil";
+import ProfileBtn from "./ProfileBtn";
+import SearchBox from "./SearchBox";
+import StreamingOptions from "./StreamingOptions";
+import { searchBarAtom } from "@/store/atom";
+import { Input } from "./ui/input";
+import Explore from "./Explore";
+
 const Appbar = () => {
-    // const router = useRouter()
-    const {data: session , status} = useSession()
-    // console.log("authdata",session.data.user.name);
+  const toggleSearchBar = useRecoilValue(searchBarAtom);
+
   return (
-    <div className="h-12 w-full border-b flex p-2 justify-between">
-      <div>{session?.user?.name ? session.user.name : "Guest"}</div>
-       <div className="flex gap-3">
-            <button className="border px-3 py-1 rounded-lg" onClick={() => signIn()}>Signin</button>
-            <button className="border px-3 py-1 rounded-lg" onClick={() => signOut()}>Logout</button>
-       </div>
-
+    <div>
+      {toggleSearchBar ? (
+        <Input
+          placeholder="Search"
+          className="hidden md:block rounded-l-full h-full"
+        />
+      ) : (
+        <div className="h-14 w-full border-b flex py-2 px-5 justify-between dark:text-white items-center dark:bg-black">
+          <div className="flex items-center gap-3">
+            <Explore />
+            <div>video streaming app</div>
+          </div>
+          <SearchBox />
+          <div className="flex gap-6">
+            <StreamingOptions />
+            <ProfileBtn />
+          </div>
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default Appbar
+export default Appbar;
