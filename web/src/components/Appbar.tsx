@@ -6,10 +6,31 @@ import StreamingOptions from "./StreamingOptions";
 import { searchBarAtom } from "@/store/atom";
 import { Input } from "./ui/input";
 import Explore from "./Explore";
+import { signIn, useSession } from "next-auth/react";
+import { Button } from "./ui/button";
 
 const Appbar = () => {
   const toggleSearchBar = useRecoilValue(searchBarAtom);
+  const session = useSession();
 
+  if (session.status === "loading") {
+    return "";
+  }
+
+  if (session.status === "unauthenticated") {
+    return (
+      <div className="h-14 w-[80%] border-2 rounded-lg flex justify-between items-center px-5 sticky shadow-xl">
+        <div className="text-xl font-semibold">VSA</div>
+        <Button
+          className="bg-black text-white hover:bg-black hover:scale-105 transition-all duration-300"
+          variant={"default"}
+          onClick={() => signIn()}
+        >
+          Signin
+        </Button>
+      </div>
+    );
+  }
   return (
     <div>
       {toggleSearchBar ? (
