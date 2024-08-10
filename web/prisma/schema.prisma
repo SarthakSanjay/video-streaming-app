@@ -32,3 +32,21 @@ model VideoMetadata{
   src         String
   createdAt   DateTime @default(now())
 }
+
+model Comments {
+  id          Int @default(autoincrement()) @unique
+  text        String
+  likes       Int
+  createdAt   DateTime @default(now()) 
+}
+
+model Channel {
+    id          Int @default(autoincrement()) @unique
+    name        String
+    subscribers Int
+    banner      String
+    logo        String
+    description String
+    createdAt   DateTime @default(now())
+  }
+
