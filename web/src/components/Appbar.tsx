@@ -1,16 +1,14 @@
 "use client";
 import { useRecoilValue } from "recoil";
 import ProfileBtn from "./ProfileBtn";
-import SearchBox from "./SearchBox";
 import StreamingOptions from "./StreamingOptions";
 import { searchBarAtom } from "@/store/atom";
 import { Input } from "./ui/input";
-import Explore from "./Explore";
 import { signIn, useSession } from "next-auth/react";
 import { Button } from "./ui/button";
+import { Search } from "lucide-react";
 
 const Appbar = () => {
-  const toggleSearchBar = useRecoilValue(searchBarAtom);
   const session = useSession();
 
   if (session.status === "loading") {
@@ -32,25 +30,15 @@ const Appbar = () => {
     );
   }
   return (
-    <div>
-      {toggleSearchBar ? (
-        <Input
-          placeholder="Search"
-          className="hidden md:block rounded-l-full h-full"
-        />
-      ) : (
-        <div className="h-14 w-full border-b flex py-2 px-5 justify-between dark:text-white items-center dark:bg-black">
-          <div className="flex items-center gap-3">
-            <Explore />
-            <div>video streaming app</div>
-          </div>
-          <SearchBox />
-          <div className="flex gap-6">
-            <StreamingOptions />
-            <ProfileBtn />
-          </div>
-        </div>
-      )}
+    <div className="h-14 w-full border-white border-0 flex justify-center items-center">
+      <div className="h-14 w-2/3 ml-[250px] border-0 border-white rounded-2xl flex gap-4 justify-center items-center justify-self-center bg-black/25 dark:text-white dark:bg-white/25 px-5">
+        <Search />
+        <Input placeholder="search" className="border-0 h-10 shadow-none w-full outline-none focus-visible:ring-0" />
+      </div>
+      <div className="ml-[100px] flex gap-5">
+        <StreamingOptions />
+        <ProfileBtn />
+      </div>
     </div>
   );
 };
