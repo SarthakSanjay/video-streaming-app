@@ -1,14 +1,15 @@
-import React from 'react'
+"use client"
+import React, { ReactNode } from 'react'
 import StudioSidebar from './StudioSidebar'
-import StudioDashboard from './StudioDashboard'
+import Appbar from '../Appbar'
 
-const Studio = () => {
+const Studio = ({ children }: { children: ReactNode }) => {
   return (
-    <div className='h-screen w-screen bg-black text-white border border-white flex flex-col'>
-      <div className='h-14 w-full bg-purple-500/60'></div>
-      <div className='h-full w-full border border-red-500 flex'>
+    <div className='h-screen w-screen dark:bg-gradient-to-r from-black via-[#130837] to-black text-white flex flex-col items-center'>
+      <Appbar />
+      <div className='h-full w-full border-0 border-blue-500 flex'>
         <StudioSidebar />
-        <StudioDashboard />
+        {children}
       </div>
     </div>
   )
