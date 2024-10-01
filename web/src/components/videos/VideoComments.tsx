@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Input } from '../ui/input'
-import { comment } from 'postcss'
 import { ChevronDown } from 'lucide-react'
-
+import { motion } from 'framer-motion'
 interface Reply {
   name: string;
   comment: string;
@@ -27,14 +26,14 @@ const VideoComments = () => {
     { name: "doraemaon", comment: "I love doracake" }
   ]
   return (
-    <div className='h-max w-full'>
-      <div className='h-24 w-full border border-white px-2 flex justify-center items-center gap-3'>
+    <div className='h-max w-full border-0 border-white'>
+      <div className='h-24 w-full border-0 border-white px-2 flex justify-between items-center'>
         <div className='h-12 w-12 bg-white rounded-full'></div>
-        <Input placeholder='Add a comment' />
+        <Input placeholder='Add a comment' className='w-[90%]' />
       </div>
       <div className='h-max w-full py-4 px-2'>
         {comments.map((comment) => {
-          return <div className='h-max w-full border border-white '>
+          return <div className='h-max w-full border-0 border-white '>
             <div className='h-14 w-full flex gap-3 items-center'>
               <div className='h-12 w-12 bg-blue-600 rounded-full'></div>
               <h1>{comment.name}</h1>
@@ -42,7 +41,7 @@ const VideoComments = () => {
             <p className='ml-14'>{comment.comment}</p>
             <button className='flex text-violet-500 ml-14'
               onClick={() => setToggleReplies(!toggleReplies)}>{comment.replies && <ChevronDown />} {comment.replies?.length}</button>
-            {toggleReplies ? <Replies comment={comment} /> : ""}
+            {toggleReplies ? <Replies comment={comment} toggle={toggleReplies} /> : ""}
           </div>
         })}
       </div>
@@ -50,18 +49,22 @@ const VideoComments = () => {
   )
 }
 
-const Replies = ({ comment }: { comment: Comment }) => {
-  return <div className='ml-14'>{
-    comment.replies?.map((comment) => {
-      return <div className='h-max w-full'>
-        <div className='h-14 w-full flex gap-3 items-center'>
-          <div className='h-12 w-12 bg-blue-600 rounded-full'></div>
-          <h1>{comment.name}</h1>
+const Replies = ({ comment, toggle }: { comment: Comment, toggle: boolean }) => {
+  return <motion.div className='ml-14'
+    initial={{ height: "0%" }}
+    animate={toggle ? { height: '100%' } : {}}
+    transition={{ duration: 0.4 }}
+  >{
+      comment.replies?.map((comment) => {
+        return <div className='h-max w-full'>
+          <div className='h-14 w-full flex gap-3 items-center'>
+            <div className='h-12 w-12 bg-blue-600 rounded-full'></div>
+            <h1>{comment.name}</h1>
+          </div>
+          <p className='ml-14'>{comment.comment}</p>
         </div>
-        <p className='ml-14'>{comment.comment}</p>
-      </div>
-    })
-  }</div>
+      })
+    }</motion.div>
 }
 
 
