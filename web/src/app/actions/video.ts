@@ -100,3 +100,30 @@ export async function deleteComment(videoId: number, commentId: number) {
     return "Error deleting comment"
   }
 }
+
+export async function editComment(newText: string, commentId: number) {
+  try {
+    const comment = await prisma.comments.findUnique({
+      where: {
+        id: commentId,
+      }
+    })
+
+    if (!comment) {
+      return "Comment not found"
+    }
+
+    await prisma.comments.update({
+      where: {
+        id: commentId
+      },
+      data: {
+        text: newText
+      }
+    })
+
+    return 'comment edited'
+  } catch (error) {
+    return "Error editing comment"
+  }
+}
