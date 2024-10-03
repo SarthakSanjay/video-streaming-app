@@ -75,3 +75,28 @@ export async function addComment(userId: number, videoId: number, text: string) 
     return 'Error adding comment';
   }
 }
+
+export async function deleteComment(videoId: number, commentId: number) {
+  try {
+    const comment = await prisma.comments.findUnique({
+      where: {
+        id: commentId,
+        videoId: videoId
+      }
+    })
+    if (!comment) {
+      return "Comment not found"
+    }
+
+    await prisma.comments.delete({
+      where: {
+        id: commentId,
+        videoId: videoId
+      }
+    })
+
+    return 'comment deleted successfully'
+  } catch (error) {
+    return "Error deleting comment"
+  }
+}
